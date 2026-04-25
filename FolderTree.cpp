@@ -14,12 +14,12 @@
 //  Reparse points are utterly undocumented in Win2K, but can wreak havoc
 //  in SpaceMonger.  We try hard to deal with them anyway.
 
-#if (_WIN32_WINNT < 0x500)
-
 //  Maximum reparse buffer info size. The max user defined reparse
 //  data is 16KB, plus there's a header.
 //
 #define MAX_REPARSE_SIZE	17000
+
+#if (_WIN32_WINNT < 0x500)
 
 //  Undocumented FSCTL_SET_REPARSE_POINT structure definition
 #define REPARSE_MOUNTPOINT_HEADER_SIZE   8
@@ -33,7 +33,9 @@ typedef struct {
     WCHAR          ReparseTarget[1];
 } REPARSE_MOUNTPOINT_DATA_BUFFER, *PREPARSE_MOUNTPOINT_DATA_BUFFER;
 
-#define FSCTL_GET_REPARSE_POINT CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 42, METHOD_BUFFERED, FILE_ANY_ACCESS) // , REPARSE_DATA_BUFFER
+#ifndef FSCTL_GET_REPARSE_POINT
+#define FSCTL_GET_REPARSE_POINT CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 42, METHOD_BUFFERED, FILE_ANY_ACCESS)
+#endif
 
 #endif
 
